@@ -25,5 +25,5 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: '12.x'
-    - name: Install Dependencies
-      run: npm install
+    - name: Initialze Node.js
+      run: npm init
