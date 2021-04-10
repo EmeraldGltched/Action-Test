@@ -1,23 +1,30 @@
-name: dotnet package
-
+name: Build Web App
+ 
 on: [push]
-
+ 
 jobs:
   build:
-
+ 
     runs-on: windows-latest
-    strategy:
-      matrix:
-        dotnet-version: [ '3.0', '3.1.x', '5.0.x' ]
-
+ 
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup dotnet
-      uses: actions/setup-dotnet@v1.7.2
+    - uses: actions/checkout@v1
+      name: Checkout Code
+     
+    - name: Setup MSBuild Path
+      uses: warrenbuckley/Setup-MSBuild@v1
+       
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1.0.2
+     
+    - name: Restore NuGet Packages
+      run: nuget restore SimpleFrameworkApp.sln
+ 
+    - name: Build and Publish Web App
+      run: msbuild SimpleFrameworkApp.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
+ 
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v1.0.0
       with:
-        dotnet-version: ${{ matrix.dotnet-version }}
-        
-    - name: Create Project
-      run: dotnet new console --output RazorPagesMovie
-    - name: Run Project
-      run: dotnet run --project RazorPagesMovie
+        name: published_webapp
+        path: bin\Release\Publish
