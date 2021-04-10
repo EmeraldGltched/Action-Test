@@ -18,6 +18,6 @@ jobs:
         dotnet-version: ${{ matrix.dotnet-version }}
         
     - name: Create Project
-      run: dotnet new console --output sample1
+      run: dotnet new console --output RazorPagesMovie
     - name: Run Project
-      run: dotnet run --project sample1
+      run: dotnet run --project RazorPagesMovie
